@@ -1,0 +1,111 @@
+<html>
+
+<body>
+	<!-- <form action="poc2" method="get">
+<Br/>whocares<input type="text" name="whocares"/>
+<input type="submit" value="get"/>
+</form>
+
+
+<form action="poc1" method="post">
+<Br/>whocares<input type="text" name="whocares"/>
+<input type="submit" value="post"/>
+</form>
+
+<button id="b2"> jquery works</button> -->
+
+	<input id="bookid" type="text" name="whocares" placeholder="bookid" />
+	<span id="msg">message show here</span>
+	<br /><br /><input id="bookname" type="text" name="whocares" placeholder="bookname" />
+	<br /><br /><input id="price" type="text" name="whocares" placeholder="price" />
+	<br /><br /><button id="update">Update Book</button>
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>
+	//our scrip will come here
+
+	$(() => {
+		console.log(" page loaded ");
+
+		$("#bookid").blur(() => {
+			console.log("blur event work ");
+
+			let id = { bookid: $("#bookid").val() };
+			console.log(id);
+
+			let parametergivenbyfunction = {
+				data: id,
+				url: "http://localhost:8081/bookinfo",
+				type: "get",
+				dataType: "json",
+				success: (datagivenbyserver) => {
+					console.log("data given by server : " + datagivenbyserver.status);
+
+					if (datagivenbyserver.status === true) {
+						$("#msg").text(" Bookid Found ");
+						$("#bookid").val(datagivenbyserver.bookdetails.bookid);
+						$("#bookname").val(datagivenbyserver.bookdetails.bookname);
+						$("#price").val(datagivenbyserver.bookdetails.price);
+					} else {
+						$("#msg").text(" Bookid Not Found ");
+						$("#bookid").val("");
+						$("#bookname").val("");
+						$("#price").val("");
+					}
+				},
+
+				error: (errogivenbyserver) => {
+					console.log("failed to connect server " + errogivenbyserver.status);
+				},
+			};
+			$.ajax(parametergivenbyfunction);
+		});
+
+		// **************************** update *****************************
+
+		$("#update").click(() => {
+			console.log("click event work ");
+
+			let id2 = {
+				bookid2: $("#bookid").val(),
+				bookname2: $("#bookname").val(),
+				price2: $("#price").val(),
+			};
+
+			console.log(id2);
+
+			let parametergivenbyfunction = {
+				data: id2,
+				url: "http://localhost:8081/bookupdate",
+				type: "get",
+				dataType: "json",
+				success: (datagivenbyserver) => {
+					console.log("data given by server : " + datagivenbyserver.status);
+
+					if (datagivenbyserver.status === true) {
+						$("#msg").text(" update book details successfully .... ");
+					} else {
+						$("#msg").text("   failed  to update book details ");
+					}
+				},
+
+				error: (errogivenbyserver) => {
+					console.log("failed to connect server " + errogivenbyserver.status);
+				},
+			};
+			$.ajax(parametergivenbyfunction);
+
+
+		});
+
+
+
+
+	});
+
+
+</script>
+
+</html>
+
